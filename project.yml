@@ -1,0 +1,71 @@
+name: AI-OS
+options:
+  bundleIdPrefix: com.aios
+  deploymentTarget:
+    macOS: "13.0"
+  xcodeVersion: "15.0"
+  generateEmptyDirectories: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    MACOSX_DEPLOYMENT_TARGET: "13.0"
+    CODE_SIGN_IDENTITY: "-"
+    CODE_SIGN_STYLE: Manual
+    DEVELOPMENT_TEAM: ""
+
+targets:
+  AI-OS:
+    type: application
+    platform: macOS
+    sources:
+      - path: AI-OS
+        excludes:
+          - "**/.DS_Store"
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.aios.menubar
+        INFOPLIST_FILE: AI-OS/Info.plist
+        CODE_SIGN_ENTITLEMENTS: AI-OS/AI-OS.entitlements
+        PRODUCT_NAME: "AI OS"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        COMBINE_HIDPI_IMAGES: YES
+        LD_RUNPATH_SEARCH_PATHS: "@executable_path/../Frameworks"
+        SWIFT_EMIT_LOC_STRINGS: YES
+        ENABLE_HARDENED_RUNTIME: YES
+    entitlements:
+      path: AI-OS/AI-OS.entitlements
+
+  AI-OSTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: AI-OSTests
+        excludes:
+          - "**/.DS_Store"
+    dependencies:
+      - target: AI-OS
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.aios.menubar.tests
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/AI-OS.app/Contents/MacOS/AI-OS"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+
+schemes:
+  AI-OS:
+    build:
+      targets:
+        AI-OS: all
+        AI-OSTests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - AI-OSTests
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release
