@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import AppKit
 
 class SettingsViewModel: ObservableObject {
     @Published var openAIKey: String
@@ -22,9 +23,8 @@ class SettingsViewModel: ObservableObject {
         settings.googleKey = googleKey
     }
 
-    func toggleSound() {
-        soundEnabled.toggle()
-        settings.soundEnabled = soundEnabled
+    func setSoundEnabled(_ enabled: Bool) {
+        settings.soundEnabled = enabled
     }
 
     func clearConversation() {
