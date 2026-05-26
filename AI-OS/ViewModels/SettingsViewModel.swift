@@ -23,7 +23,6 @@ class SettingsViewModel: ObservableObject {
     }
 
     func toggleSound() {
-        soundEnabled.toggle()
         settings.soundEnabled = soundEnabled
     }
 

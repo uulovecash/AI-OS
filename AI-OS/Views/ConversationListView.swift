@@ -37,7 +37,7 @@ struct ConversationListView: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
         }
-        .frame(height: conversations.isEmpty ? 0 : 38)
+        .frame(height: 38)
     }
 }
 

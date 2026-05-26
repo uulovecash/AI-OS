@@ -88,6 +88,8 @@ struct EmptyChatView: View {
 }
 
 struct LoadingBubbleView: View {
+    @State private var animate = false
+
     var body: some View {
         HStack {
             HStack(spacing: 4) {
@@ -95,12 +97,12 @@ struct LoadingBubbleView: View {
                     Circle()
                         .fill(Color.secondary.opacity(0.5))
                         .frame(width: 6, height: 6)
-                        .opacity(0.3)
+                        .opacity(animate ? 1.0 : 0.3)
                         .animation(
                             .easeInOut(duration: 0.6)
                             .repeatForever()
                             .delay(Double(i) * 0.15),
-                            value: UUID()
+                            value: animate
                         )
                 }
             }
@@ -110,6 +112,7 @@ struct LoadingBubbleView: View {
             .clipShape(RoundedRectangle(cornerRadius: 16))
             Spacer()
         }
+        .onAppear { animate = true }
     }
 }
 
