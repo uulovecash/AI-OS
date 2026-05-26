@@ -17,6 +17,13 @@ struct PopoverView: View {
             Divider()
 
             ScrollViewReader { proxy in
+                let scrollToBottom = {
+                    if let lastId = viewModel.currentConversation.messages.last?.id {
+                        withAnimation(.easeOut(duration: 0.2)) {
+                            proxy.scrollTo(lastId, anchor: .bottom)
+                        }
+                    }
+                }
                 ScrollView {
                     LazyVStack(spacing: 8) {
                         if viewModel.currentConversation.messages.isEmpty {
@@ -40,29 +47,13 @@ struct PopoverView: View {
                     .padding(.vertical, 12)
                 }
                 .onChange(of: viewModel.currentConversation.messages.count) { _, _ in
-                    if let lastId = viewModel.currentConversation.messages.last?.id {
-                        withAnimation(.easeOut(duration: 0.2)) {
-                            proxy.scrollTo(lastId, anchor: .bottom)
-                        }
-                    }
+                    scrollToBottom()
                 }
                 .onChange(of: viewModel.isLoading) { _, isLoading in
-                    if isLoading {
-                        if let lastId = viewModel.currentConversation.messages.last?.id {
-                            withAnimation(.easeOut(duration: 0.2)) {
-                                proxy.scrollTo(lastId, anchor: .bottom)
-                            }
-                        }
-                    }
+                    if isLoading { scrollToBottom() }
                 }
                 .onChange(of: viewModel.errorMessage) { _, error in
-                    if error != nil {
-                        if let lastId = viewModel.currentConversation.messages.last?.id {
-                            withAnimation(.easeOut(duration: 0.2)) {
-                                proxy.scrollTo(lastId, anchor: .bottom)
-                            }
-                        }
-                    }
+                    if error != nil { scrollToBottom() }
                 }
             }
 
