@@ -59,6 +59,12 @@ class ChatViewModel: ObservableObject {
         currentConversation = Conversation()
     }
 
+    func clearAllConversations() {
+        conversations = []
+        currentConversation = Conversation()
+        storage.clearAll()
+    }
+
     func clearCurrentConversation() {
         currentConversation = Conversation()
         saveCurrentConversation()

@@ -46,6 +46,24 @@ struct PopoverView: View {
                         }
                     }
                 }
+                .onChange(of: viewModel.isLoading) { _, isLoading in
+                    if isLoading {
+                        if let lastId = viewModel.currentConversation.messages.last?.id {
+                            withAnimation(.easeOut(duration: 0.2)) {
+                                proxy.scrollTo(lastId, anchor: .bottom)
+                            }
+                        }
+                    }
+                }
+                .onChange(of: viewModel.errorMessage) { _, error in
+                    if error != nil {
+                        if let lastId = viewModel.currentConversation.messages.last?.id {
+                            withAnimation(.easeOut(duration: 0.2)) {
+                                proxy.scrollTo(lastId, anchor: .bottom)
+                            }
+                        }
+                    }
+                }
             }
 
             Divider()
@@ -67,7 +85,7 @@ struct PopoverView: View {
         }
         .frame(width: 380, height: 520)
         .sheet(isPresented: $viewModel.showSettings) {
-            SettingsView()
+            SettingsView(onClearAll: { viewModel.clearAllConversations() })
         }
     }
 }

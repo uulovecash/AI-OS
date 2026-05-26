@@ -26,10 +26,6 @@ class SettingsViewModel: ObservableObject {
         settings.soundEnabled = soundEnabled
     }
 
-    func clearConversation() {
-        settings.clearAllData()
-    }
-
     func quitApp() {
         NSApplication.shared.terminate(nil)
     }
