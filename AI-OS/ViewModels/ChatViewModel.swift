@@ -65,11 +65,6 @@ class ChatViewModel: ObservableObject {
         storage.clearAll()
     }
 
-    func clearCurrentConversation() {
-        currentConversation = Conversation()
-        saveCurrentConversation()
-    }
-
     private func generateStubResponse(for input: String, model: AIModel) -> String {
         let responses: [String]
         switch model {

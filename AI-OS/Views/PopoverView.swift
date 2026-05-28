@@ -2,6 +2,7 @@ import SwiftUI
 
 struct PopoverView: View {
     @ObservedObject var viewModel: ChatViewModel
+    private let bottomScrollAnchor = "bottomScrollAnchor"
 
     var body: some View {
         VStack(spacing: 0) {
@@ -18,10 +19,8 @@ struct PopoverView: View {
 
             ScrollViewReader { proxy in
                 let scrollToBottom = {
-                    if let lastId = viewModel.currentConversation.messages.last?.id {
-                        withAnimation(.easeOut(duration: 0.2)) {
-                            proxy.scrollTo(lastId, anchor: .bottom)
-                        }
+                    withAnimation(.easeOut(duration: 0.2)) {
+                        proxy.scrollTo(bottomScrollAnchor, anchor: .bottom)
                     }
                 }
                 ScrollView {
@@ -42,6 +41,10 @@ struct PopoverView: View {
                         if let error = viewModel.errorMessage {
                             ErrorBubbleView(message: error)
                         }
+
+                        Color.clear
+                            .frame(height: 1)
+                            .id(bottomScrollAnchor)
                     }
                     .padding(.horizontal, 16)
                     .padding(.vertical, 12)
