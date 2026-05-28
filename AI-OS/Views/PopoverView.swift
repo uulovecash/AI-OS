@@ -17,6 +17,13 @@ struct PopoverView: View {
             Divider()
 
             ScrollViewReader { proxy in
+                let scrollToBottom = {
+                    if let lastId = viewModel.currentConversation.messages.last?.id {
+                        withAnimation(.easeOut(duration: 0.2)) {
+                            proxy.scrollTo(lastId, anchor: .bottom)
+                        }
+                    }
+                }
                 ScrollView {
                     LazyVStack(spacing: 8) {
                         if viewModel.currentConversation.messages.isEmpty {
@@ -40,11 +47,13 @@ struct PopoverView: View {
                     .padding(.vertical, 12)
                 }
                 .onChange(of: viewModel.currentConversation.messages.count) { _, _ in
-                    if let lastId = viewModel.currentConversation.messages.last?.id {
-                        withAnimation(.easeOut(duration: 0.2)) {
-                            proxy.scrollTo(lastId, anchor: .bottom)
-                        }
-                    }
+                    scrollToBottom()
+                }
+                .onChange(of: viewModel.isLoading) { _, isLoading in
+                    if isLoading { scrollToBottom() }
+                }
+                .onChange(of: viewModel.errorMessage) { _, error in
+                    if error != nil { scrollToBottom() }
                 }
             }
 
@@ -67,7 +76,7 @@ struct PopoverView: View {
         }
         .frame(width: 380, height: 520)
         .sheet(isPresented: $viewModel.showSettings) {
-            SettingsView()
+            SettingsView(onClearAll: { viewModel.clearAllConversations() })
         }
     }
 }
@@ -88,6 +97,8 @@ struct EmptyChatView: View {
 }
 
 struct LoadingBubbleView: View {
+    @State private var animate = false
+
     var body: some View {
         HStack {
             HStack(spacing: 4) {
@@ -95,12 +106,12 @@ struct LoadingBubbleView: View {
                     Circle()
                         .fill(Color.secondary.opacity(0.5))
                         .frame(width: 6, height: 6)
-                        .opacity(0.3)
+                        .opacity(animate ? 1.0 : 0.3)
                         .animation(
                             .easeInOut(duration: 0.6)
                             .repeatForever()
                             .delay(Double(i) * 0.15),
-                            value: UUID()
+                            value: animate
                         )
                 }
             }
@@ -110,6 +121,7 @@ struct LoadingBubbleView: View {
             .clipShape(RoundedRectangle(cornerRadius: 16))
             Spacer()
         }
+        .onAppear { animate = true }
     }
 }
 

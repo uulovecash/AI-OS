@@ -8,10 +8,6 @@ struct ChatInputView: View {
 
     @FocusState private var isFocused: Bool
 
-    private var trimmedText: String {
-        text.trimmingCharacters(in: .whitespacesAndNewlines)
-    }
-
     var body: some View {
         HStack(alignment: .bottom, spacing: 8) {
             ZStack(alignment: .topLeading) {
@@ -30,9 +26,6 @@ struct ChatInputView: View {
                     .focused($isFocused)
                     .frame(minHeight: 40, maxHeight: 120)
                     .fixedSize(horizontal: false, vertical: true)
-                    .onSubmit {
-                        if canSend { onSend() }
-                    }
             }
             .padding(.horizontal, 8)
             .padding(.vertical, 4)
@@ -50,6 +43,7 @@ struct ChatInputView: View {
             }
             .buttonStyle(.plain)
             .disabled(!canSend)
+            .keyboardShortcut(.return, modifiers: .command)
             .help("Send (⌘+Enter)")
         }
         .onAppear {

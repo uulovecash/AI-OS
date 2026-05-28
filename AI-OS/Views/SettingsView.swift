@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct SettingsView: View {
+    let onClearAll: () -> Void
     @StateObject private var viewModel = SettingsViewModel()
     @Environment(\.dismiss) private var dismiss
 
@@ -71,7 +72,8 @@ struct SettingsView: View {
 
             VStack(spacing: 8) {
                 Button("Clear All Conversations") {
-                    viewModel.clearConversation()
+                    onClearAll()
+                    dismiss()
                 }
                 .buttonStyle(.plain)
                 .foregroundStyle(.red)

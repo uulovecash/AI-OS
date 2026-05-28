@@ -23,12 +23,7 @@ class SettingsViewModel: ObservableObject {
     }
 
     func toggleSound() {
-        soundEnabled.toggle()
         settings.soundEnabled = soundEnabled
-    }
-
-    func clearConversation() {
-        settings.clearAllData()
     }
 
     func quitApp() {
