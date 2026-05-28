@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 enum AIModel: String, Codable, CaseIterable, Identifiable {
     case gpt4o = "GPT-4o"

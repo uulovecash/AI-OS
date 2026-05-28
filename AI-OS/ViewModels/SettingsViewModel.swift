@@ -1,11 +1,28 @@
 import Foundation
 import Combine
+import AppKit
 
 class SettingsViewModel: ObservableObject {
-    @Published var openAIKey: String
-    @Published var anthropicKey: String
-    @Published var googleKey: String
-    @Published var soundEnabled: Bool
+    @Published var openAIKey: String {
+        didSet {
+            settings.openAIKey = openAIKey
+        }
+    }
+    @Published var anthropicKey: String {
+        didSet {
+            settings.anthropicKey = anthropicKey
+        }
+    }
+    @Published var googleKey: String {
+        didSet {
+            settings.googleKey = googleKey
+        }
+    }
+    @Published var soundEnabled: Bool {
+        didSet {
+            settings.soundEnabled = soundEnabled
+        }
+    }
 
     private let settings = AppSettings.shared
 
